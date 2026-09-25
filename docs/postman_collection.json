@@ -1,0 +1,168 @@
+{
+  "info": {
+    "name": "ServiceDesk API",
+    "description": "Employee Service Request System - REST API. Import into Postman, set the `base_url` and `token` collection variables (token is filled automatically by the Login request's test script).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "base_url", "value": "http://localhost:4000/api" },
+    { "key": "token", "value": "" },
+    { "key": "request_id", "value": "1" }
+  ],
+  "item": [
+    {
+      "name": "Health",
+      "request": { "method": "GET", "url": "{{base_url}}/health" }
+    },
+    {
+      "name": "Auth - Register",
+      "request": {
+        "method": "POST",
+        "url": "{{base_url}}/auth/register",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"New Employee\",\n  \"email\": \"new.employee@example.com\",\n  \"password\": \"Password123!\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Auth - Login",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const json = pm.response.json();",
+              "if (json.token) { pm.collectionVariables.set('token', json.token); }"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "url": "{{base_url}}/auth/login",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"priya@example.com\",\n  \"password\": \"Password123!\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Auth - Me",
+      "request": {
+        "method": "GET",
+        "url": "{{base_url}}/auth/me",
+        "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }]
+      }
+    },
+    {
+      "name": "Requests - List",
+      "request": {
+        "method": "GET",
+        "url": "{{base_url}}/requests",
+        "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }]
+      }
+    },
+    {
+      "name": "Requests - Create",
+      "request": {
+        "method": "POST",
+        "url": "{{base_url}}/requests",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"category\": \"IT\",\n  \"title\": \"Laptop not booting\",\n  \"description\": \"My laptop stalls at the login screen after the last update.\",\n  \"priority\": \"high\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Requests - Detail",
+      "request": {
+        "method": "GET",
+        "url": "{{base_url}}/requests/{{request_id}}",
+        "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }]
+      }
+    },
+    {
+      "name": "Requests - Update Status (agent/admin)",
+      "request": {
+        "method": "PATCH",
+        "url": "{{base_url}}/requests/{{request_id}}",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"status\": \"in_progress\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Requests - Add Comment",
+      "request": {
+        "method": "POST",
+        "url": "{{base_url}}/requests/{{request_id}}/comments",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"body\": \"Looking into this now.\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Dashboard - Summary",
+      "request": {
+        "method": "GET",
+        "url": "{{base_url}}/dashboard/summary",
+        "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }]
+      }
+    },
+    {
+      "name": "Users - List (admin)",
+      "request": {
+        "method": "GET",
+        "url": "{{base_url}}/users",
+        "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }]
+      }
+    },
+    {
+      "name": "Users - Create (admin)",
+      "request": {
+        "method": "POST",
+        "url": "{{base_url}}/users",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"New IT Agent\",\n  \"email\": \"new.agent@example.com\",\n  \"password\": \"Password123!\",\n  \"role\": \"agent\",\n  \"department\": \"IT\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Users - Toggle Active (admin)",
+      "request": {
+        "method": "PATCH",
+        "url": "{{base_url}}/users/{{request_id}}/active",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"is_active\": false\n}"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Environment files (never commit real secrets)
+.env
+**/.env
+!.env.example
+!**/.env.example
+
+# Build output
+dist/
+**/dist/
+build/
+
+# Logs
+*.log
+npm-debug.log*
+logs/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+
+# Test/coverage
+coverage/
+.nyc_output/
+
+# Docker
+*.pid
