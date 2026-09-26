@@ -4,13 +4,13 @@ import { dashboardApi } from '../api/client';
 import { useAuth } from '../context/AuthContext';
 
 const STATUS_COLORS = {
-  open: '#f59e0b',
-  in_progress: '#3b82f6',
-  resolved: '#10b981',
-  closed: '#64748b',
-  cancelled: '#94a3b8',
+  open: '#c1560f',
+  in_progress: '#2b6cb0',
+  resolved: '#1f7a5c',
+  closed: '#8b9793',
+  cancelled: '#c8ccc6',
 };
-const CATEGORY_COLORS = { IT: '#6366f1', HR: '#ec4899', Facility: '#14b8a6' };
+const CATEGORY_COLORS = { IT: '#0f6f66', HR: '#a2440a', Facility: '#4a7c76' };
 
 export default function Dashboard() {
   const { user } = useAuth();
@@ -75,7 +75,7 @@ export default function Dashboard() {
               <Tooltip />
               <Bar dataKey="count" radius={[6, 6, 0, 0]}>
                 {data.byCategory.map((entry) => (
-                  <Cell key={entry.category} fill={CATEGORY_COLORS[entry.category] || '#6366f1'} />
+                  <Cell key={entry.category} fill={CATEGORY_COLORS[entry.category] || '#0f6f66'} />
                 ))}
               </Bar>
             </BarChart>
@@ -89,7 +89,7 @@ export default function Dashboard() {
               <XAxis type="number" allowDecimals={false} stroke="#94a3b8" />
               <YAxis type="category" dataKey="priority" stroke="#94a3b8" width={80} />
               <Tooltip />
-              <Bar dataKey="count" fill="#8b5cf6" radius={[0, 6, 6, 0]} />
+              <Bar dataKey="count" fill="#147a70" radius={[0, 6, 6, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>
